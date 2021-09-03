@@ -1,10 +1,10 @@
 var userInput = document.querySelector('#cityinput');
 var submitButton = document.getElementById("submitbutton");
-var messagebox=document.getElementById("messagebox");
+var messagebox = document.getElementById("messagebox");
 var cityList = $('#citylist');
-var citycontainer =$('#citycontainer');
+var citycontainer = $('#citycontainer');
 var searchHistory = [];
-var resetButton=document.getElementById("reset");
+var resetButton = document.getElementById("reset");
 
 buildsearchHistory();
 
@@ -14,13 +14,14 @@ function buildsearchHistory() {
     if (storedCities !== null) {
         searchHistory = storedCities;
     };
-     // lists up to 8
+    // lists up to 8
     for (i = 0; i < searchHistory.length; i++) {
         if (i == 8) {
             break;
-          }
-        var buttonlistEl= $('<button>').attr({
-            class: "buttonclass",})
+        }
+        var buttonlistEl = $('<button>').attr({
+            class: "buttonclass",
+        })
         var buttonlistDetail = searchHistory[i];
         buttonlistEl.text(buttonlistDetail);
         buttonlistEl.appendTo(cityList);
@@ -28,19 +29,18 @@ function buildsearchHistory() {
     }
 };
 
-    
+
 //Submit Button Saves City selected by User
 submitButton.addEventListener('click', function(event) {
     event.preventDefault();
     city = $(cityinput).val()
-    //getData();
+        //getData();
     var checkArray = searchHistory.includes(city);
     if (checkArray == true) {
         $("#cityinput").val("");
-messagebox.textContent="Please Choose A Different City";
+        messagebox.textContent = "Please Choose A Different City";
         return
-    }
-    else {
+    } else {
         searchHistory.push(city);
         localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
         var citylistButton = $('<button>').attr({
@@ -50,7 +50,8 @@ messagebox.textContent="Please Choose A Different City";
         citylistButton.text(citybuttonDetail);
         citylistButton.appendTo(cityList);
         $("#cityinput").val("");
-    }});
+    }
+});
 
 
 //Autocomplete Function Runs when User Searches for a City
@@ -210,9 +211,10 @@ $(function() {
     });
 });
 
-resetButton.addEventListener("click", function(event){
+resetButton.addEventListener("click", function(event) {
     event.preventDefault();
     localStorage.clear();
     console.log("hello");
-$('.buttonclass').attr({class: "displaynone",})
-$("#cityinput").val("");})
+    $('.buttonclass').attr({ class: "displaynone", })
+    $("#cityinput").val("");
+})
