@@ -1,45 +1,80 @@
-       body {
-           background: lightpink;
-           display: flex;
-           justify-content: center;
-           flex-wrap: wrap;
-           flex-direction: column;
-       }
-       
-       main {
-           width: 100%;
-           height: 100%;
-       }
-       
-       #searchbox {
-           width: 20%;
-           height: 100%;
-           border-right: 2px black solid;
-       }
-       
-       header h1 {
-           text-align: center;
-           margin-top: 0px;
-           margin-bottom: 0px;
-           font-size: 60px;
-           font-family: Brush Script MT, cursive;
-       }
-       
-       header h2 {
-           margin-top: 0px;
-           font-size: 20px;
-           text-align: center;
-       }
-       
-       footer {
-           align-self: left;
-       }
-       
-       .buttonclass {
-           background-color: pink;
-           display: block;
-       }
-       
-       .displaynone {
-           display: none;
-       }
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: lightpink;
+}
+
+
+/* #dateandtime {
+    text-align: center;
+}*/
+
+#citychosen {
+    margin: 0px;
+    color: black;
+    font-size: 30px;
+    font-family: 'Days One'
+}
+
+#todaydate {
+    margin: 0px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
+}
+
+header h1 {
+    color: grey;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 60px;
+    font-family: Brush Script MT, cursive;
+}
+
+header h2 {
+    margin-top: 0px;
+    font-size: 20px;
+    text-align: center;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    width: 100%;
+}
+
+#searchbox {
+    display: inline;
+    width: 20%;
+    border-right: 2px black solid;
+}
+
+#weatherbox {
+    display: inline;
+    width: 80%;
+}
+
+footer {
+    align-self: left;
+}
+
+.buttonclass {
+    background-color: pink;
+    display: block;
+}
+
+.displaynone {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    #searchbox {
+        width: 35%;
+    }
+    #weatherbox {
+        width: 50%;
+    }
+}

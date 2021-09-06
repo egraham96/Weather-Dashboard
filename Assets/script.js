@@ -4,11 +4,13 @@ var messagebox = document.getElementById("messagebox");
 var cityList = $('#citylist');
 var citycontainer = $('#citycontainer');
 var searchHistory = [];
+var weatherbox = document.getElementById("weatherbox");
 var resetButton = document.getElementById("reset");
+
 
 buildsearchHistory();
 
-// This function grabs search history from Local Storage
+// This Function grabs Search History from Local Storage
 function buildsearchHistory() {
     var storedCities = JSON.parse(localStorage.getItem("searchHistory"));
     if (storedCities !== null) {
@@ -30,11 +32,10 @@ function buildsearchHistory() {
 };
 
 
-//Submit Button Saves City selected by User
+//Submit Button Saves City Selected by User
 submitButton.addEventListener('click', function(event) {
     event.preventDefault();
     city = $(cityinput).val()
-        //getData();
     var checkArray = searchHistory.includes(city);
     if (checkArray == true) {
         $("#cityinput").val("");
@@ -50,8 +51,40 @@ submitButton.addEventListener('click', function(event) {
         citylistButton.text(citybuttonDetail);
         citylistButton.appendTo(cityList);
         $("#cityinput").val("");
+        getData(city);
     }
 });
+
+
+function getData(city) {
+    var apiKey = 'b748bb5e0d9a2b21227f16e116293fbd';
+    var currentWeatherURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + apiKey;
+    fetch(currentWeatherURL)
+        .then(function(response) {
+            if (response.ok) {
+                console.log(response);
+                response.json().then(function(data) {
+                    console.log(response);
+                    console.log(data);
+                    $("#citychosen").text(city);
+                    $("#temp").text("Current Tempature: " + data.main.temp + "° Fahrenheit");
+                    $("#humid").text("Current Humidity : " + data.main.humidity);
+                    $("#wind").text("Current Windspeed: " + data.wind.speed + "Knots");
+                    setDate();
+                    setUV();
+
+                });
+            } else {
+                alert('Error: ' + response.statusText);
+            }
+        })
+        .catch(function(error) {
+            alert('Unable to connect to OpenWeather');
+        });
+};
+
+
+
 
 
 //Autocomplete Function Runs when User Searches for a City
@@ -211,10 +244,30 @@ $(function() {
     });
 });
 
-resetButton.addEventListener("click", function(event) {
-    event.preventDefault();
+
+
+//This function sets the Date
+function setDate() {
+    var weatherDay = moment().format('(MM/DD/YYYY)');
+    $("#todaydate").text(weatherDay);
+    //var oneDay = moment().add(01, 'days').format('MM/D/YYYY')
+    //$("#forecast-date").text(oneDay);
+    //var twoDay = moment().add(02, 'days').format('MM/DD/ YYYY ')
+    //$("#forecast-date2").text(twoDay);
+    //var threeDay = moment().add(03, 'days').format('MM/D/YYYY')
+    //$("#forecast-date3").text(threeDay);
+    //var fourDay = moment().add(04, 'days').format('MM/D/YYYY')
+    //$("#forecast-date4").text(fourDay);
+    //var fiveDay = moment().add(05, 'days').format('MM/D/YYYY')
+    //$("#forecast-date5").text(fiveDay);
+}
+
+function setUV(data) { $("#UV").text(data.name); }
+
+//This Function Clears Local Storage
+resetButton.addEventListener("click", function() {
+    searchHistory.length = 0;
     localStorage.clear();
-    console.log("hello");
     $('.buttonclass').attr({ class: "displaynone", })
     $("#cityinput").val("");
 })
