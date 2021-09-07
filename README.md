@@ -8,7 +8,7 @@ This week's homework required us to create a weather dashboard application using
 * HTML
 * CSS
 * Javascript
-* OpenWeather One Call API
+* [Open Weather Map One Call API](https://openweathermap.org/api/one-call-api/)
 * [jQuery](https://jquery.com/)
 * [jQuery UI](https://jqueryui.com/)
 * [Moment JS](https://momentjs.com/)
