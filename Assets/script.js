@@ -58,23 +58,15 @@ submitButton.addEventListener('click', function(event) {
 
 
 function getData(city) {
-    iconImg1 = 'Assets/sun.png';
-    iconImg2 = 'Assets/cloud.png'
     var currentWeatherURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + apiKey;
     fetch(currentWeatherURL)
         .then(function(response) {
             if (response.ok) {
-                console.log(response);
                 response.json().then(function(data) {
-                    console.log(response);
-                    console.log(data);
                     $("#citychosen").text(city);
                     $("#humid").text("Current Humidity : " + data.main.humidity);
                     $("#wind").text("Current Windspeed: " + data.wind.speed + " Knots");
                     $("#temp").text("Current Tempature: " + data.main.temp + "° Fahrenheit");
-                    if (data.main.temp > 60) {
-                        icon.setAttribute('src', iconImg1);
-                    } else { icon.setAttribute('src', iconImg2); }
                     var latitude = data.coord.lat;
                     var longitude = data.coord.lon;
                     console.log(latitude);
@@ -279,10 +271,12 @@ function setUV(latitude, longitude) {
         .then(data => {
             console.log(data);
             $("#UV").text("Current UV: " + data.current.uvi);
-
+            var icon1 = data.daily[0].weather[0].icon;
+            var iconImg1 = 'http://openweathermap.org/img/wn/' + icon1 + '.png';
+            icon.setAttribute('src', iconImg1);
         })
 }
-console.log(cityList);
+
 cityList.on("click", function(event) {
     getData(event.target.innerText)
 });
