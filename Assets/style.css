@@ -7,7 +7,7 @@ body {
 }
 
 
-/* #dateandtime {
+/* #current {
     text-align: center;
 }*/
 
@@ -55,6 +55,17 @@ main {
 #weatherbox {
     display: inline;
     width: 80%;
+}
+
+#current {
+    background-color: lightpink;
+}
+
+#icon {
+    background-color: lightpink;
+    float: right;
+    height: 50px;
+    width: 50px;
 }
 
 footer {

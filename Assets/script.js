@@ -1,9 +1,11 @@
+var apiKey = 'b748bb5e0d9a2b21227f16e116293fbd';
 var userInput = document.querySelector('#cityinput');
 var submitButton = document.getElementById("submitbutton");
 var messagebox = document.getElementById("messagebox");
 var cityList = $('#citylist');
-var citycontainer = $('#citycontainer');
+var citycontainer = document.getElementById("citycontainer");
 var searchHistory = [];
+var icon = document.getElementById("icon");
 var weatherbox = document.getElementById("weatherbox");
 var resetButton = document.getElementById("reset");
 
@@ -16,13 +18,10 @@ function buildsearchHistory() {
     if (storedCities !== null) {
         searchHistory = storedCities;
     };
-    // lists up to 8
     for (i = 0; i < searchHistory.length; i++) {
-        if (i == 8) {
-            break;
-        }
         var buttonlistEl = $('<button>').attr({
             class: "buttonclass",
+            dataId: searchHistory[i]
         })
         var buttonlistDetail = searchHistory[i];
         buttonlistEl.text(buttonlistDetail);
@@ -42,10 +41,12 @@ submitButton.addEventListener('click', function(event) {
         messagebox.textContent = "Please Choose A Different City";
         return
     } else {
+        if (searchHistory.length === 8) { searchHistory.shift() };
         searchHistory.push(city);
         localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
         var citylistButton = $('<button>').attr({
             class: "buttonclass",
+            dataId: city
         });
         var citybuttonDetail = $(cityinput).val()
         citylistButton.text(citybuttonDetail);
@@ -57,7 +58,8 @@ submitButton.addEventListener('click', function(event) {
 
 
 function getData(city) {
-    var apiKey = 'b748bb5e0d9a2b21227f16e116293fbd';
+    iconImg1 = 'Assets/sun.png';
+    iconImg2 = 'Assets/cloud.png'
     var currentWeatherURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + apiKey;
     fetch(currentWeatherURL)
         .then(function(response) {
@@ -67,11 +69,18 @@ function getData(city) {
                     console.log(response);
                     console.log(data);
                     $("#citychosen").text(city);
-                    $("#temp").text("Current Tempature: " + data.main.temp + "° Fahrenheit");
                     $("#humid").text("Current Humidity : " + data.main.humidity);
-                    $("#wind").text("Current Windspeed: " + data.wind.speed + "Knots");
+                    $("#wind").text("Current Windspeed: " + data.wind.speed + " Knots");
+                    $("#temp").text("Current Tempature: " + data.main.temp + "° Fahrenheit");
+                    if (data.main.temp > 60) {
+                        icon.setAttribute('src', iconImg1);
+                    } else { icon.setAttribute('src', iconImg2); }
+                    var latitude = data.coord.lat;
+                    var longitude = data.coord.lon;
+                    console.log(latitude);
+                    console.log(longitude);
                     setDate();
-                    setUV();
+                    setUV(latitude, longitude);
 
                 });
             } else {
@@ -250,24 +259,40 @@ $(function() {
 function setDate() {
     var weatherDay = moment().format('(MM/DD/YYYY)');
     $("#todaydate").text(weatherDay);
-    //var oneDay = moment().add(01, 'days').format('MM/D/YYYY')
-    //$("#forecast-date").text(oneDay);
-    //var twoDay = moment().add(02, 'days').format('MM/DD/ YYYY ')
-    //$("#forecast-date2").text(twoDay);
-    //var threeDay = moment().add(03, 'days').format('MM/D/YYYY')
-    //$("#forecast-date3").text(threeDay);
-    //var fourDay = moment().add(04, 'days').format('MM/D/YYYY')
-    //$("#forecast-date4").text(fourDay);
-    //var fiveDay = moment().add(05, 'days').format('MM/D/YYYY')
-    //$("#forecast-date5").text(fiveDay);
+    var oneDay = moment().add(01, 'days').format('MM/DD/YYYY')
+    $("#forecastdate").text(oneDay);
+    var twoDay = moment().add(02, 'days').format('MM/DD/YYYY')
+    $("#forecastdate2").text(twoDay);
+    var threeDay = moment().add(03, 'days').format('MM/DD/YYYY')
+    $("#forecastdate3").text(threeDay);
+    var fourDay = moment().add(04, 'days').format('MM/DD/YYYY')
+    $("#forecastdate4").text(fourDay);
+    var fiveDay = moment().add(05, 'days').format('MM/DD/YYYY')
+    $("#forecastdate5").text(fiveDay);
 }
 
-function setUV(data) { $("#UV").text(data.name); }
+
+function setUV(latitude, longitude) {
+    const latLonURL = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + latitude + '&lon=' + longitude + '&exclude=minutely,hourly,alerts&units=imperial&appid=' + apiKey;
+    fetch(latLonURL)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            $("#UV").text("Current UV: " + data.current.uvi);
+
+        })
+}
+console.log(cityList);
+cityList.on("click", function(event) {
+    getData(event.target.innerText)
+});
 
 //This Function Clears Local Storage
-resetButton.addEventListener("click", function() {
+resetButton.addEventListener("click", function(event) {
+    event.preventDefault();
     searchHistory.length = 0;
     localStorage.clear();
-    $('.buttonclass').attr({ class: "displaynone", })
+    citycontainer.innerText = "";
     $("#cityinput").val("");
+    $("#messagebox").val("");
 })
