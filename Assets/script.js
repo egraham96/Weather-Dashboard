@@ -68,7 +68,7 @@ function getData(city) {
             if (response.ok) {
                 response.json().then(function(data) {
                     $("#citychosen").text(city);
-                    $("#humid").text("Current Humidity : " + data.main.humidity);
+                    $("#humid").text("Current Humidity : " + data.main.humidity + "%");
                     $("#wind").text("Current Windspeed: " + data.wind.speed + " Knots");
                     $("#temp").text("Current Tempature: " + data.main.temp + "° Fahrenheit");
                     var latitude = data.coord.lat;
@@ -116,7 +116,6 @@ function getmoreData(latitude, longitude) {
             var icon1 = data2.daily[0].weather[0].icon;
             var iconImg1 = 'http://openweathermap.org/img/wn/' + icon1 + '.png';
             icon.setAttribute('src', iconImg1);
-            //for (var i = 0; i < data1.daily.length -3; i++){
             var iconF = data2.daily[0].weather[0].icon
             $("#forecasticon").attr("src", "http://openweathermap.org/img/wn/" + iconF + "@2x.png")
             var iconF2 = data2.daily[1].weather[0].icon
@@ -128,40 +127,38 @@ function getmoreData(latitude, longitude) {
             var iconF5 = data2.daily[4].weather[0].icon
             $("#forecasticon5").attr("src", "http://openweathermap.org/img/wn/" + iconF5 + "@2x.png")
                 //5-day temp
-            var tempF = parseInt(data2.daily[0].temp.max)
-            $("#forecasttemp").text(tempF + " deg")
-            var tempF2 = parseInt(data2.daily[1].temp.max)
-            $("#forecasttemp2").text(tempF2 + " deg")
-            var tempF3 = parseInt(data2.daily[2].temp.max)
-            $("#forecasttemp3").text(tempF3 + " deg")
-            var tempF4 = parseInt(data2.daily[3].temp.max)
-            $("#forecasttemp4").text(tempF4 + " deg")
-            var tempF5 = parseInt(data2.daily[4].temp.max)
-            $("#forecasttemp5").text(tempF5 + " deg")
+            var temp = parseInt(data2.daily[0].temp.max)
+            $("#forecasttemp").text(temp + "° Fahrenheit")
+            var temp2 = parseInt(data2.daily[1].temp.max)
+            $("#forecasttemp2").text(temp2 + "° Fahrenheit")
+            var temp3 = parseInt(data2.daily[2].temp.max)
+            $("#forecasttemp3").text(temp3 + "° Fahrenheit")
+            var temp4 = parseInt(data2.daily[3].temp.max)
+            $("#forecasttemp4").text(temp4 + "° Fahrenheit")
+            var temp5 = parseInt(data2.daily[4].temp.max)
+            $("#forecasttemp5").text(temp5 + "° Fahrenheit")
                 // 5-day wind
-            var windF = data2.daily[0].wind_speed
-            $("#forecastwind").text("WIND: " + windF + " MPH")
-            var windF2 = data2.daily[1].wind_speed
-            $("#forecastwind2").text("WIND: " + windF2 + " MPH")
-            var windF3 = data2.daily[2].wind_speed
-            $("#forecastwind3").text("WIND: " + windF3 + " MPH")
-            var windF4 = data2.daily[3].wind_speed
-            $("#forecastwind4").text("WIND: " + windF4 + " MPH")
-            var windF5 = data2.daily[4].wind_speed
-            $("#forecastwind5").text("WIND: " + windF5 + " MPH")
-                //5-day Humidity
-            var humF = data2.daily[0].humidity
-            $("#forecasthumidity").text("Humididty " + humF + "%")
-            var humF2 = data2.daily[1].humidity
-            $("#forecasthumidity1").text("Humididty " + humF2 + "%")
-            var humF3 = data2.daily[2].humidity
-            $("#forecasthumidity2").text("Humididty " + humF3 + "%")
-            var humF4 = data2.daily[3].humidity
-            $("#forecasthumidity3").text("Humididty " + humF4 + "%")
-            var humF5 = data2.daily[4].humidity
-            $("#forecasthumidity4").text("Humididty " + humF5 + "%")
-
-
+            var wind = data2.daily[0].wind_speed;
+            $("#forecastwind").text("Windspeed: " + wind + " Knots");
+            var wind2 = data2.daily[1].wind_speed
+            $("#forecastwind2").text("Windspeed: " + wind2 + " Knots");
+            var wind3 = data2.daily[2].wind_speed
+            $("#forecastwind3").text("Windspeed: " + wind3 + " Knots");
+            var wind4 = data2.daily[3].wind_speed
+            $("#forecastwind4").text("Windspeed: " + wind4 + " Knots");
+            var wind5 = data2.daily[4].wind_speed
+            $("#forecastwind5").text("Windspeed: " + wind5 + " Knots");
+            //5-day Humidity
+            var hum = data2.daily[0].humidity
+            $("#forecasthumidity").text("Humidity " + hum + "%");
+            var hum2 = data2.daily[1].humidity
+            $("#forecasthumidity2").text("Humidity " + hum2 + "%");
+            var hum3 = data2.daily[2].humidity
+            $("#forecasthumidity3").text("Humidity " + hum3 + "%");
+            var hum4 = data2.daily[3].humidity
+            $("#forecasthumidity4").text("Humidity " + hum4 + "%");
+            var hum5 = data2.daily[4].humidity
+            $("#forecasthumidity5").text("Humidity " + hum5 + "%");
 
         })
 }
@@ -170,7 +167,7 @@ cityList.on("click", function(event) {
     getData(event.target.innerText)
 });
 
-//This Function Clears Local Storage
+//This Function Clears Local Storage and Returns User to Homepage
 resetButton.addEventListener("click", function(event) {
     event.preventDefault();
     searchHistory.length = 0;

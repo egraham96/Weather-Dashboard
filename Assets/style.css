@@ -51,7 +51,12 @@ main {
     display: inline-block;
 }
 
-#todaydate {
+#todaydate,
+#forecastdate,
+#forecastdate2,
+#forecastdate3,
+#forecastdate4,
+#forecastdate5 {
     margin: 0px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 20px;
@@ -72,9 +77,7 @@ main {
 .daybox {
     background-color: transparent;
     display: inline;
-    height: 200px;
-    width: 100px;
-    margin: 4px;
+    margin: 20px;
 }
 
 .daybox p {
@@ -92,9 +95,18 @@ footer {
 
 @media screen and (max-width: 768px) {
     #searchbox {
-        width: 35%;
+        width: 30%;
+    }
+    #cityinput {
+        width: 50%
     }
     #weatherbox {
         width: 50%;
+    }
+    #fiveday {
+        flex-direction: column;
+    }
+    #daybox {
+        margin: 0px;
     }
 }
