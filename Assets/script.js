@@ -5,8 +5,9 @@ var messagebox = document.getElementById("messagebox");
 var cityList = $('#citylist');
 var citycontainer = document.getElementById("citycontainer");
 var searchHistory = [];
-var icon = document.getElementById("icon");
 var weatherbox = document.getElementById("weatherbox");
+var icon = document.getElementById("icon");
+var fiveday = document.getElementById("fiveday");
 var resetButton = document.getElementById("reset");
 
 
@@ -33,6 +34,7 @@ function buildsearchHistory() {
 
 //Submit Button Saves City Selected by User
 submitButton.addEventListener('click', function(event) {
+    fiveday.removeAttribute("style", "display:none");
     event.preventDefault();
     city = $(cityinput).val()
     var checkArray = searchHistory.includes(city);
@@ -58,6 +60,7 @@ submitButton.addEventListener('click', function(event) {
 
 
 function getData(city) {
+    fiveday.removeAttribute("style", "display:none");
     var currentWeatherURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + apiKey;
     fetch(currentWeatherURL)
         .then(function(response) {

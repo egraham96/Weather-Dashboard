@@ -57,6 +57,23 @@ main {
     font-size: 20px;
 }
 
+#fiveday {
+    display: flex;
+    flex-direction: row;
+}
+
+.daybox {
+    background-color: transparent;
+    display: inline;
+    height: 200px;
+    width: 100px;
+    margin: 4px;
+}
+
+.daybox p {
+    color: black;
+}
+
 footer {
     align-self: left;
 }
