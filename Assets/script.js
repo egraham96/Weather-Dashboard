@@ -7,6 +7,7 @@ var citycontainer = document.getElementById("citycontainer");
 var searchHistory = [];
 var weatherbox = document.getElementById("weatherbox");
 var icon = document.getElementById("icon");
+var five = document.getElementById("five");
 var fiveday = document.getElementById("fiveday");
 var resetButton = document.getElementById("reset");
 
@@ -22,7 +23,7 @@ function buildsearchHistory() {
     for (i = 0; i < searchHistory.length; i++) {
         var buttonlistEl = $('<button>').attr({
             class: "buttonclass",
-            dataId: searchHistory[i]
+
         })
         var buttonlistDetail = searchHistory[i];
         buttonlistEl.text(buttonlistDetail);
@@ -48,7 +49,6 @@ submitButton.addEventListener('click', function(event) {
         localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
         var citylistButton = $('<button>').attr({
             class: "buttonclass",
-            dataId: city
         });
         var citybuttonDetail = $(cityinput).val()
         citylistButton.text(citybuttonDetail);
@@ -60,6 +60,7 @@ submitButton.addEventListener('click', function(event) {
 
 
 function getData(city) {
+    five.removeAttribute("style", "display:none");
     fiveday.removeAttribute("style", "display:none");
     var currentWeatherURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + apiKey;
     fetch(currentWeatherURL)
@@ -75,7 +76,7 @@ function getData(city) {
                     console.log(latitude);
                     console.log(longitude);
                     setDate();
-                    setUV(latitude, longitude);
+                    getmoreData(latitude, longitude);
 
                 });
             } else {
@@ -88,7 +89,97 @@ function getData(city) {
 };
 
 
+//This function Sets the Current Date and next Five Days
+function setDate() {
+    var weatherDay = moment().format('(MM/DD/YYYY)');
+    $("#todaydate").text(weatherDay);
+    var oneDay = moment().add(01, 'days').format('MM/DD/YYYY')
+    $("#forecastdate").text(oneDay);
+    var twoDay = moment().add(02, 'days').format('MM/DD/YYYY')
+    $("#forecastdate2").text(twoDay);
+    var threeDay = moment().add(03, 'days').format('MM/DD/YYYY')
+    $("#forecastdate3").text(threeDay);
+    var fourDay = moment().add(04, 'days').format('MM/DD/YYYY')
+    $("#forecastdate4").text(fourDay);
+    var fiveDay = moment().add(05, 'days').format('MM/DD/YYYY')
+    $("#forecastdate5").text(fiveDay);
+}
 
+
+function getmoreData(latitude, longitude) {
+    const latLonURL = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + latitude + '&lon=' + longitude + '&exclude=minutely,hourly,alerts&units=imperial&appid=' + apiKey;
+    fetch(latLonURL)
+        .then(response => response.json())
+        .then(data2 => {
+            console.log(data2);
+            $("#UV").text("Current UV: " + data2.current.uvi);
+            var icon1 = data2.daily[0].weather[0].icon;
+            var iconImg1 = 'http://openweathermap.org/img/wn/' + icon1 + '.png';
+            icon.setAttribute('src', iconImg1);
+            //for (var i = 0; i < data1.daily.length -3; i++){
+            var iconF = data2.daily[0].weather[0].icon
+            $("#forecasticon").attr("src", "http://openweathermap.org/img/wn/" + iconF + "@2x.png")
+            var iconF2 = data2.daily[1].weather[0].icon
+            $("#forecasticon2").attr("src", "http://openweathermap.org/img/wn/" + iconF2 + "@2x.png")
+            var iconF3 = data2.daily[2].weather[0].icon
+            $("#forecasticon3").attr("src", "http://openweathermap.org/img/wn/" + iconF3 + "@2x.png")
+            var iconF4 = data2.daily[3].weather[0].icon
+            $("#forecasticon4").attr("src", "http://openweathermap.org/img/wn/" + iconF4 + "@2x.png")
+            var iconF5 = data2.daily[4].weather[0].icon
+            $("#forecasticon5").attr("src", "http://openweathermap.org/img/wn/" + iconF5 + "@2x.png")
+                //5-day temp
+            var tempF = parseInt(data2.daily[0].temp.max)
+            $("#forecasttemp").text(tempF + " deg")
+            var tempF2 = parseInt(data2.daily[1].temp.max)
+            $("#forecasttemp2").text(tempF2 + " deg")
+            var tempF3 = parseInt(data2.daily[2].temp.max)
+            $("#forecasttemp3").text(tempF3 + " deg")
+            var tempF4 = parseInt(data2.daily[3].temp.max)
+            $("#forecasttemp4").text(tempF4 + " deg")
+            var tempF5 = parseInt(data2.daily[4].temp.max)
+            $("#forecasttemp5").text(tempF5 + " deg")
+                // 5-day wind
+            var windF = data2.daily[0].wind_speed
+            $("#forecastwind").text("WIND: " + windF + " MPH")
+            var windF2 = data2.daily[1].wind_speed
+            $("#forecastwind2").text("WIND: " + windF2 + " MPH")
+            var windF3 = data2.daily[2].wind_speed
+            $("#forecastwind3").text("WIND: " + windF3 + " MPH")
+            var windF4 = data2.daily[3].wind_speed
+            $("#forecastwind4").text("WIND: " + windF4 + " MPH")
+            var windF5 = data2.daily[4].wind_speed
+            $("#forecastwind5").text("WIND: " + windF5 + " MPH")
+                //5-day Humidity
+            var humF = data2.daily[0].humidity
+            $("#forecasthumidity").text("Humididty " + humF + "%")
+            var humF2 = data2.daily[1].humidity
+            $("#forecasthumidity1").text("Humididty " + humF2 + "%")
+            var humF3 = data2.daily[2].humidity
+            $("#forecasthumidity2").text("Humididty " + humF3 + "%")
+            var humF4 = data2.daily[3].humidity
+            $("#forecasthumidity3").text("Humididty " + humF4 + "%")
+            var humF5 = data2.daily[4].humidity
+            $("#forecasthumidity4").text("Humididty " + humF5 + "%")
+
+
+
+        })
+}
+//This Function Allows Users to Select City from Local Storage
+cityList.on("click", function(event) {
+    getData(event.target.innerText)
+});
+
+//This Function Clears Local Storage
+resetButton.addEventListener("click", function(event) {
+    event.preventDefault();
+    searchHistory.length = 0;
+    localStorage.clear();
+    citycontainer.innerText = "";
+    weatherbox.innerText = "";
+    $("#cityinput").val("");
+    $("#messagebox").val("");
+})
 
 
 //Autocomplete Function Runs when User Searches for a City
@@ -247,49 +338,3 @@ $(function() {
         source: cityNames,
     });
 });
-
-
-
-//This function sets the Date
-function setDate() {
-    var weatherDay = moment().format('(MM/DD/YYYY)');
-    $("#todaydate").text(weatherDay);
-    var oneDay = moment().add(01, 'days').format('MM/DD/YYYY')
-    $("#forecastdate").text(oneDay);
-    var twoDay = moment().add(02, 'days').format('MM/DD/YYYY')
-    $("#forecastdate2").text(twoDay);
-    var threeDay = moment().add(03, 'days').format('MM/DD/YYYY')
-    $("#forecastdate3").text(threeDay);
-    var fourDay = moment().add(04, 'days').format('MM/DD/YYYY')
-    $("#forecastdate4").text(fourDay);
-    var fiveDay = moment().add(05, 'days').format('MM/DD/YYYY')
-    $("#forecastdate5").text(fiveDay);
-}
-
-
-function setUV(latitude, longitude) {
-    const latLonURL = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + latitude + '&lon=' + longitude + '&exclude=minutely,hourly,alerts&units=imperial&appid=' + apiKey;
-    fetch(latLonURL)
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            $("#UV").text("Current UV: " + data.current.uvi);
-            var icon1 = data.daily[0].weather[0].icon;
-            var iconImg1 = 'http://openweathermap.org/img/wn/' + icon1 + '.png';
-            icon.setAttribute('src', iconImg1);
-        })
-}
-
-cityList.on("click", function(event) {
-    getData(event.target.innerText)
-});
-
-//This Function Clears Local Storage
-resetButton.addEventListener("click", function(event) {
-    event.preventDefault();
-    searchHistory.length = 0;
-    localStorage.clear();
-    citycontainer.innerText = "";
-    $("#cityinput").val("");
-    $("#messagebox").val("");
-})
