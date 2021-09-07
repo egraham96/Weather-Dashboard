@@ -62,7 +62,7 @@ submitButton.addEventListener('click', function(event) {
 function getData(city) {
     five.removeAttribute("style", "display:none");
     fiveday.removeAttribute("style", "display:none");
-    var currentWeatherURL = "//api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + apiKey;
+    var currentWeatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial" + "&appid=" + apiKey;
     fetch(currentWeatherURL)
         .then(function(response) {
             if (response.ok) {
@@ -107,26 +107,26 @@ function setDate() {
 
 
 function getmoreData(latitude, longitude) {
-    const latLonURL = '//api.openweathermap.org/data/2.5/onecall?lat=' + latitude + '&lon=' + longitude + '&exclude=minutely,hourly,alerts&units=imperial&appid=' + apiKey;
+    const latLonURL = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + latitude + '&lon=' + longitude + '&exclude=minutely,hourly,alerts&units=imperial&appid=' + apiKey;
     fetch(latLonURL)
         .then(response => response.json())
         .then(data2 => {
             console.log(data2);
             $("#UV").text("Current UV: " + data2.current.uvi);
             var icon1 = data2.daily[0].weather[0].icon;
-            var iconImg1 = '//openweathermap.org/img/wn/' + icon1 + '.png';
+            var iconImg1 = 'https://openweathermap.org/img/wn/' + icon1 + '.png';
             icon.setAttribute('src', iconImg1);
             var iconF = data2.daily[0].weather[0].icon
-            $("#forecasticon").attr("src", "//openweathermap.org/img/wn/" + iconF + "@2x.png")
+            $("#forecasticon").attr("src", "https://openweathermap.org/img/wn/" + iconF + "@2x.png")
             var iconF2 = data2.daily[1].weather[0].icon
-            $("#forecasticon2").attr("src", "//openweathermap.org/img/wn/" + iconF2 + "@2x.png")
+            $("#forecasticon2").attr("src", "https://openweathermap.org/img/wn/" + iconF2 + "@2x.png")
             var iconF3 = data2.daily[2].weather[0].icon
-            $("#forecasticon3").attr("src", "//openweathermap.org/img/wn/" + iconF3 + "@2x.png")
+            $("#forecasticon3").attr("src", "https://openweathermap.org/img/wn/" + iconF3 + "@2x.png")
             var iconF4 = data2.daily[3].weather[0].icon
-            $("#forecasticon4").attr("src", "//openweathermap.org/img/wn/" + iconF4 + "@2x.png")
+            $("#forecasticon4").attr("src", "https://openweathermap.org/img/wn/" + iconF4 + "@2x.png")
             var iconF5 = data2.daily[4].weather[0].icon
-            $("#forecasticon5").attr("src", "//openweathermap.org/img/wn/" + iconF5 + "@2x.png")
-                //5-day temp
+            $("#forecasticon5").attr("src", "https://openweathermap.org/img/wn/" + iconF5 + "@2x.png")
+            //5 day temp
             var temp = parseInt(data2.daily[0].temp.max)
             $("#forecasttemp").text(temp + "° Fahrenheit")
             var temp2 = parseInt(data2.daily[1].temp.max)
@@ -137,7 +137,7 @@ function getmoreData(latitude, longitude) {
             $("#forecasttemp4").text(temp4 + "° Fahrenheit")
             var temp5 = parseInt(data2.daily[4].temp.max)
             $("#forecasttemp5").text(temp5 + "° Fahrenheit")
-                // 5-day wind
+            // 5 day wind
             var wind = data2.daily[0].wind_speed;
             $("#forecastwind").text("Windspeed: " + wind + " Knots");
             var wind2 = data2.daily[1].wind_speed
@@ -148,7 +148,7 @@ function getmoreData(latitude, longitude) {
             $("#forecastwind4").text("Windspeed: " + wind4 + " Knots");
             var wind5 = data2.daily[4].wind_speed
             $("#forecastwind5").text("Windspeed: " + wind5 + " Knots");
-            //5-day Humidity
+            //5 day Humidity
             var hum = data2.daily[0].humidity
             $("#forecasthumidity").text("Humidity " + hum + "%");
             var hum2 = data2.daily[1].humidity
