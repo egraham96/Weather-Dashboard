@@ -16,8 +16,8 @@ This week's homework required us to create a weather dashboard application using
 * [Google Fonts](https://developers.google.com/fonts/)
 
 ## Deployed Links:
-* [See Live Site](https://egraham96.github.io/homework-assignment-06/)
-* [Link to GitHub Repo](https://github.com/egraham96/homework-assignment-06)
+* [See Live Site](https://egraham96.github.io/Weather-Dashboard/)
+* [Link to GitHub Repo](https://github.com/egraham96/Weather-Dashboard)
 
 ## Preview of Working Site:
 ![Screenshot of Deployed Application](Assets/ScreenshotofDeployedApplication.PNG)
